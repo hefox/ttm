@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul>
+  {% for usertrack in userstrack %}
+  <li>
+    {{ usertrack.key.id() }} {{ usertrack.something }}
+  </li>
+  {% endfor %}
+</ul>
+{{ request.headers.get("X-AppEngine-CityLatLong") }}
+{% endblock %}
