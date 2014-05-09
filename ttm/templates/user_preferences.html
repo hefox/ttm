@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 id="">Update Preferences</h1>
+    <form action="{{ url_for('user_preferences') }}" method="post" accept-charset="utf-8">
+        {{ form.csrf_token }}
+        <p>
+            {{ form.gender_male|safe }}<label for="gender_male">{{ form.gender_male.label }}</label>
+            {{ form.gender_female|safe }}<label for="gender_male">{{ form.gender_female.label }}</label>
+            <label for="gender_multiple">{{ form.gender_multiple.label }}</label>
+
+            {{ form.gender_multiple|safe }}
+
+            {% if form.gender_multiple.errors or form.gender_male.errors or form.gender_female.errors %}
+            <ul class="errors">
+                {% if form.gender_male.errors %}
+                    {% for error in form.gender_male.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                {% endif %}
+                {% if form.gender_female.errors %}
+                    {% for error in form.gender_female.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                {% endif %}
+                {% if form.gender_multiple.errors %}
+                    {% for error in form.gender_multiple.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            {% endif %}
+        </p>
+        <p><input type="submit" value="Save preferences"/></p>
+    </form>
+{% endblock %}

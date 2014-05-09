@@ -4,9 +4,8 @@
 <ul>
   {% for usertrack in userstrack %}
   <li>
-    {{ usertrack.key.id() }} {{ usertrack.something }}
+    {{ usertrack.key.id() }} {{ usertrack.something }} {{ usertrack.location.latitude }}
   </li>
   {% endfor %}
 </ul>
-{{ request.headers.get("X-AppEngine-CityLatLong") }}
 {% endblock %}
