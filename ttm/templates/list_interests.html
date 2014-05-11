@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<ul>
+<h1>Interests</h1>
+<div class="list-group">
   {% for interest in interests %}
-  <li>
-    <a href="/users?interest={{ interest }}">{{ interest }}</a>
-  </li>
+  <a  class="list-group-item" href="/users?interest={{ interest }}">{{ interest }}</a>
   {% endfor %}
 </ul>
 {% endblock %}

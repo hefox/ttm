@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<ul>
+<h1>Genders</h1>
+<div class="list-group">
   {% for gender in genders %}
-  <li>
-    <a href="/users?gender={{ gender }}">{{ gender }}</a>
-  </li>
+  <a class="list-group-item" href="/users?gender={{ gender }}">{{ gender }}</a>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

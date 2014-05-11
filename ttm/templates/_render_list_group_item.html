@@ -1,0 +1,5 @@
+{% macro render_list_group_item(title, text) %}
+  {% if text %}
+    <p class="list-group-item-text">{{ title }}: {{ text }}</p>
+  {% endif %}
+{% endmacro %}
