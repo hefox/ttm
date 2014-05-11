@@ -21,7 +21,9 @@ def before_request():
     g.loginlogouttext = 'Login'
     g.loginlogouturl = users.create_login_url(request.url)
 
+@app.route('/')
 @app.route('/users')
+@login_required
 def list_users():
   userslist = UserPreferences.query()
   # Filter by gender from url.
@@ -33,6 +35,7 @@ def list_users():
   return render_template('list_users.html', userslist=userslist)
 
 @app.route('/genders')
+@login_required
 def list_genders():
   genders_all = UserPreferences.query(projection=["gender"], distinct=True)
   genders = []
@@ -41,6 +44,7 @@ def list_genders():
   return render_template('list_genders.html', genders=genders)
 
 @app.route('/interests')
+@login_required
 def list_interests():
   interests_all = UserPreferences.query(projection=["interests"], distinct=True)
   interests = []
