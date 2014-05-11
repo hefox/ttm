@@ -2,9 +2,9 @@
 
 {% block content %}
 <ul>
-  {% for user in userslist %}
+  {% for interest in interests %}
   <li>
-    {{ user.user.nickname() }}<br />Gender {{ user.gender|join(", ") }}
+    <a href="/users?interest={{ interest }}">{{ interest }}</a>
   </li>
   {% endfor %}
 </ul>

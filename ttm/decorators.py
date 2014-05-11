@@ -1,6 +1,7 @@
 from functools import wraps
 from google.appengine.api import users
 from flask import redirect, request
+from ttm import app
 
 def login_required(func):
   @wraps(func)

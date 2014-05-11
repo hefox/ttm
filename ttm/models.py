@@ -1,6 +1,9 @@
 from google.appengine.ext import ndb
 
 class UserPreferences(ndb.Expando):
-  something = ndb.StringProperty()
   location = ndb.GeoPtProperty
   gender = ndb.StringProperty(repeated=True)
+  interests = ndb.StringProperty(repeated=True)
+  about = ndb.StringProperty(default='')
+  user = ndb.UserProperty(auto_current_user_add=True)
+

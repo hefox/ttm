@@ -1,11 +1,11 @@
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from flask import request
-
+from ttm import app
 from models import UserPreferences
 
 
-def update_preferences(in_preferences = None, update_location_with_default = True):
+def update_preferences(in_preferences = None, update_location_with_default = True, user = None):
   # Fetch the preferences object.
   preferences = get_user_preferences()
 
@@ -13,7 +13,6 @@ def update_preferences(in_preferences = None, update_location_with_default = Tru
   # This is not set for local development, so set it to random place.
   if update_location_with_default is True and latlong is None:
     latlong = "37.774929,-122.419416"
-
   # Set the user location if set.
   if latlong is not None:
     preferences.location = ndb.GeoPt(latlong)

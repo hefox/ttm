@@ -1,10 +1,33 @@
 <html>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title>{% block title %}Talk To Me{% endblock %}</title>
+    <title>{% block title %}TTM{% endblock %}</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
   </head>
   <body>
-    {% block content %}{% endblock %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
   <a href="{{ g.loginlogouturl }}">{{ g.loginlogouttext }}</a>
+  <a href="/genders">Genders</a>
+  <a href="/users">Users</a>
+  <a href="/interests">Interests</a>
+  {% if g.user_is_logged_in: %}
+    <a href="/users/preferences">Update Preferences</a>
+  {% endif %}
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </body>
 </html>

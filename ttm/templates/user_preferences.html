@@ -1,36 +1,50 @@
 {% extends "base.html" %}
-
+{% from "_render_field.html" import render_field %}
 {% block content %}
-    <h1 id="">Update Preferences</h1>
-    <form action="{{ url_for('user_preferences') }}" method="post" accept-charset="utf-8">
-        {{ form.csrf_token }}
-        <p>
-            {{ form.gender_male|safe }}<label for="gender_male">{{ form.gender_male.label }}</label>
-            {{ form.gender_female|safe }}<label for="gender_male">{{ form.gender_female.label }}</label>
-            <label for="gender_multiple">{{ form.gender_multiple.label }}</label>
+  <h1 id="">Update Preferences</h1>
+  <form action="{{ url_for('user_preferences') }}" method="post" accept-charset="utf-8">
+    {{ form.csrf_token }}
 
-            {{ form.gender_multiple|safe }}
+    <p>
+      {{ form.gender.csrf_token }}
 
-            {% if form.gender_multiple.errors or form.gender_male.errors or form.gender_female.errors %}
-            <ul class="errors">
-                {% if form.gender_male.errors %}
-                    {% for error in form.gender_male.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                {% endif %}
-                {% if form.gender_female.errors %}
-                    {% for error in form.gender_female.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                {% endif %}
-                {% if form.gender_multiple.errors %}
-                    {% for error in form.gender_multiple.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-            {% endif %}
-        </p>
-        <p><input type="submit" value="Save preferences"/></p>
-    </form>
+      <label>Gender</label>
+      <br/>
+      {{ form.gender.male|safe }}<label for="gender.male">{{ form.gender.male.label }}</label>
+      {{ form.gender.female|safe }}<label for="gender.male">{{ form.gender.female.label }}</label>
+      <br />
+      <label for="gender.multiple">{{ form.gender.multiple.label }}</label>
+
+      {{ form.gender.multiple|safe }}
+      <p>{{ form.gender.multiple.description|safe }}</p>
+
+      {% if form.gender.multiple.errors or form.gender.male.errors or form.gender.female.errors %}
+      <ul class="errors">
+        {% if form.gender.errors %}
+          {% for error in form.gender.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        {% endif %}
+        {% if form.gender.male.errors %}
+          {% for error in form.gender.male.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        {% endif %}
+        {% if form.gender.female.errors %}
+          {% for error in form.gender.female.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        {% endif %}
+        {% if form.gender.multiple.errors %}
+          {% for error in form.gender.multiple.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+      {% endif %}
+      {{ render_field(form.about) }}
+      {{ render_field(form.interests) }}
+    </p>
+    <p><input type="submit" value="Save preferences"/></p>
+  </form>
 {% endblock %}
