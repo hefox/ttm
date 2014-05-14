@@ -5,7 +5,9 @@ from decorators import login_required
 from google.appengine.api import users
 from user_preferences import *
 from forms import userPreferenceForm
+from google.appengine.api.search import *
 from helpers import *
+import string
 
 @app.before_request
 def before_request():
@@ -25,15 +27,37 @@ def before_request():
 @app.route('/users')
 @login_required
 def list_users():
+  index = search.Index(name="user_search")
 
+  # Build the SortOptions with 2 sort keys
+  sort_opts = search.SortOptions(expressions=[search.SortExpression(expression='distance(geopoint(37.774929,-122.419416), location)', direction=SortExpression.DESCENDING, default_value=0)])
 
-  userslist = UserPreferences.query()
-  # Filter by gender from url.
+  # Build the QueryOptions
+  query_options = search.QueryOptions(
+    limit=25,
+    returned_fields=['location', 'online', 'interest'],
+    sort_options= sort_opts
+  )
+  # Create the query string, limit by gender and interest.
+  query_string = ''
   if request.args.get('gender'):
-    userslist = userslist.filter(UserPreferences.gender == request.args.get('gender'))
+    query_string = 'gender = "%s"' % request.args.get('gender').replace('"', '').replace('\\', '')
   # Filter by interests from url.
   if request.args.get('interest'):
-    userslist = userslist.filter(UserPreferences.interests == request.args.get('interest'))
+    if (query_string):
+      query_string = query_string + ' && '
+    query_string = query_string + 'interest = "%s"' % request.args.get('interest').replace('"', '').replace('\\', '')
+
+  query = search.Query(query_string=query_string, options=query_options)
+  userslist = []
+  try:
+    results = index.search(query)
+    for scored_document in results:
+      userslist.append(get_user_preferences(scored_document.doc_id))
+
+  except search.Error:
+    app.logger.debug('Search failed')
+
   return render_template('list_users.html', userslist=userslist)
 
 @app.route('/genders')
