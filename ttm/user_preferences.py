@@ -16,7 +16,7 @@ def update_preferences(in_preferences = None, update_location_with_default = Tru
   latlong = request.headers.get("X-AppEngine-CityLatLong")
   # This is not set for local development, so set it to random place.
   if update_location_with_default is True and latlong is None:
-    latlong = "37.774929,-122.419416"
+    latlong = "37.116526,-121.816406"
   # Set the user location if set.
   if latlong is not None:
     preferences.location = ndb.GeoPt(latlong)

@@ -30,7 +30,7 @@ def list_users():
   index = search.Index(name="user_search")
 
   # Build the SortOptions with 2 sort keys
-  sort_opts = search.SortOptions(expressions=[search.SortExpression(expression='distance(geopoint(37.774929,-122.419416), location)', direction=SortExpression.DESCENDING, default_value=0)])
+  sort_opts = search.SortOptions(expressions=[search.SortExpression(expression='distance(geopoint(37.774929,-122.419416), location)', direction=SortExpression.ASCENDING, default_value=0)])
 
   # Build the QueryOptions
   query_options = search.QueryOptions(
