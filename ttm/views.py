@@ -25,6 +25,8 @@ def before_request():
 @app.route('/users')
 @login_required
 def list_users():
+
+
   userslist = UserPreferences.query()
   # Filter by gender from url.
   if request.args.get('gender'):

@@ -3,9 +3,13 @@ from google.appengine.ext import ndb
 from flask import request
 from ttm import app
 from models import UserPreferences
+from google.appengine.api import search 
+from datetime import datetime
 
 
 def update_preferences(in_preferences = None, update_location_with_default = True, user = None):
+  if user is None:
+    user = users.get_current_user()
   # Fetch the preferences object.
   preferences = get_user_preferences()
 
@@ -21,6 +25,20 @@ def update_preferences(in_preferences = None, update_location_with_default = Tru
     for key, value in in_preferences.iteritems():
       setattr(preferences, key, value)
   preferences.put()
+
+  latlongsplit = latlong.split(',');
+  geopoint = search.GeoPoint(float(latlongsplit[0]), float(latlongsplit[1]))
+  user_document = search.Document(
+    doc_id = user.user_id(),
+    fields = [
+      search.GeoField(name='location', value=geopoint),
+      search.DateField(name='online', value=datetime.now()),
+    ])
+  try:
+    index = search.Index(name="user_search")
+    index.put(user_document)
+  except search.Error:
+    app.logger.debug('Put failed')
 
 def get_user_preferences(user = None):
   if user is None:
