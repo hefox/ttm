@@ -60,6 +60,14 @@ def list_users():
 
   return render_template('list_users.html', userslist=userslist)
 
+@app.route('/users/<userid>')
+def show_user_profile(userid):
+  user = get_user_preferences(userid, False)
+  if user is not None:
+    return  render_template('user.html', user=user)
+  else:
+    abort(404)
+
 @app.route('/genders')
 @login_required
 def list_genders():

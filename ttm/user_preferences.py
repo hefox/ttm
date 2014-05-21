@@ -64,7 +64,9 @@ def update_preferences(in_preferences = None, update_location_with_default = Tru
     preferences.put()
     app.logger.debug('Updated NDB preferences')
 
-def get_user_preferences(user_id = None):
+# user_id as tracked by google.
+# create preferences if don't exist.
+def get_user_preferences(user_id = None, create = True):
   if user_id is None:
     user = users.get_current_user()
     if user is not None:
@@ -73,6 +75,9 @@ def get_user_preferences(user_id = None):
   key = ndb.Key('UserPreferences', user_id)
   preferences = key.get();
   # If user doesn't exist in database, create it.
-  if not preferences:
+  if not preferences and create:
     preferences = UserPreferences(id = user_id)
-  return preferences
+  if preferences:
+    return preferences
+  else:
+    return None

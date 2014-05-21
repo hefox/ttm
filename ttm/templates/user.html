@@ -2,19 +2,17 @@
 
 {% macro render_list_group_item(title, text) %}
   {% if text %}
-    <p class="list-group-item-text">{{ title }}: {{ text }}</p>
+    <li class="list-group-item">
+      <h4 class="list-group-item-heading">{{ title }}</h4>
+      <p class="list-group-item-text">{{ text }}</p>
+    </li>
   {% endif %}
 {% endmacro %}
 {% block content %}
-<h1>Users</h1>
-<ul class="list-group">
-  {% for user in userslist %}
-  <li class="list-group-item">
-    <h4 class="list-group-item-heading"><a href="users/{{ user.user.user_id() }}">{{ user.user.nickname() }}</a></h4>
+<h1>User {{ user.user.nickname() }}</h1>
+  <ul class="list-group">
     {{ render_list_group_item('Gender', user.gender|join(", ")) }}
     {{ render_list_group_item('About', user.about) }}
     {{ render_list_group_item('Interests', user.interests|join(", ")) }}
-  </li>
-  {% endfor %}
-</ul>
+  </ul>
 {% endblock %}
