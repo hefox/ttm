@@ -73,7 +73,7 @@ def get_user_preferences(user_id = None, create = True):
       user_id = user.user_id()
   # todo throw exception if not valid user.
   key = ndb.Key('UserPreferences', user_id)
-  preferences = key.get();
+  preferences = key.get()
   # If user doesn't exist in database, create it.
   if not preferences and create:
     preferences = UserPreferences(id = user_id)

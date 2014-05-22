@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
-{% macro render_list_group_item(title, text) %}
+{% from "message.html" import render_message %}
+{% macro render_list_group_item(title, text, class = '') %}
   {% if text %}
-    <li class="list-group-item">
+    <li class="list-group-item {{ class }}">
       <h4 class="list-group-item-heading">{{ title }}</h4>
       <p class="list-group-item-text">{{ text }}</p>
     </li>
@@ -15,4 +16,21 @@
     {{ render_list_group_item('About', user.about) }}
     {{ render_list_group_item('Interests', user.interests|join(", ")) }}
   </ul>
+<div id="chat">
+  <ul class="list-group">
+  {% if messages %}
+    {% for message in messages %}
+      {{ render_message(message, current_user) }}
+    {% endfor %}
+  {% endif %}
+  </ul>
+</div>
+<textarea id="chattext"></textarea>
+<button id="submit">Submit</button>
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+<script>
+  channel = new goog.appengine.Channel('{{ token }}');
+  user_id = "{{ user.user.user_id() }}";
+</script>
+<script src="/js/chat.js"></script>
 {% endblock %}

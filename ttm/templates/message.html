@@ -1,0 +1,10 @@
+{% macro render_message(message, user) %}
+  <li class="list-group-item {{ 'current-user' if message.user_id == user.user_id() else 'other-user' }}">
+    <h4 class="list-group-item-heading">{{ message.created }}</h4>
+    <p class="list-group-item-text">{{ message.message }}</p>
+  </li>
+{% endmacro %}
+
+{% if message and user %}
+  {{ render_message(message, user) }}
+{% endif %}

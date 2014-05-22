@@ -1,12 +1,13 @@
 from ttm import app
-from models import UserPreferences
-from flask import render_template, flash, redirect, url_for, request, g
+from models import UserPreferences, Message, Chats
+from flask import render_template, flash, redirect, url_for, request, g, abort
 from decorators import login_required
 from google.appengine.api import users
 from user_preferences import *
 from forms import userPreferenceForm
 from google.appengine.api.search import *
 from helpers import *
+from chat import *
 import string
 
 @app.before_request
@@ -61,12 +62,30 @@ def list_users():
   return render_template('list_users.html', userslist=userslist)
 
 @app.route('/users/<userid>')
+@login_required
 def show_user_profile(userid):
   user = get_user_preferences(userid, False)
   if user is not None:
-    return  render_template('user.html', user=user)
+    chat_info = get_chat_info(user.user)
+    return  render_template('user.html', current_user = users.get_current_user(), user=user, token = chat_info['token'], chat_key = chat_info['chat_key'], messages = chat_info['messages'])
   else:
     abort(404)
+
+@app.route('/message', methods = ['GET', 'POST'])
+@login_required
+def record_message():
+  user_id = request.form['uid']
+  message = request.form['message']
+  if not user_id or not message:
+    abort(404)
+  preferences = get_user_preferences(user_id, False)
+  in_user = preferences.user
+  user = users.get_current_user()
+  if user is None or in_user is None:
+    abort(404)
+  chat_id = get_chat_id(in_user, user)
+  set_chat_message(chat_id, user, in_user, message)
+  return 'recorded'
 
 @app.route('/genders')
 @login_required
